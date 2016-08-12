@@ -1,8 +1,10 @@
 #include "mainWindow.h"
  
-MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+MainWindow::MainWindow(QDBusConnection bus, QWidget *parent)
+    : dbusConnection(bus), QMainWindow(parent)
 {
+    registerDbusInterface();
+
     label = new QLabel(this);
     label->setAlignment(Qt::AlignCenter | Qt::AlignCenter);
     label->setText("this is a label");
@@ -22,6 +24,24 @@ MainWindow::MainWindow(QWidget *parent)
     this->show();
 }
 
+void MainWindow::registerDbusInterface()
+{
+    if (!dbusConnection.isConnected()) {
+        qDebug() <<"Cannot connect to the D-Bus session bus";
+        exit(1);
+    }
+
+    dbusConnection.registerObject(dbusPath,
+                                  this,
+                                  QDBusConnection::ExportScriptableContents);
+
+    if (!dbusConnection.registerService(dbusService)) {
+        qDebug() << dbusConnection.lastError().message();
+        exit(1);
+    }
+}
+
 void MainWindow::buttonHandle()
 {
+    emit buttonPressed();
 }
