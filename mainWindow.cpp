@@ -11,10 +11,13 @@ MainWindow::MainWindow(QWidget *parent)
     button->resize(button->sizeHint().width(), button->sizeHint().height());
     connect(button, SIGNAL (released()), this, SLOT (buttonHandle()));
 
+    child = new Child(this);
+
     layout = new QGridLayout;
 
     layout->addWidget(label,0,0);
     layout->addWidget(button,1,1);
+    layout->addWidget(child,2,0);
 
     window = new QWidget();
     window->setLayout(layout);

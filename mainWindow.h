@@ -5,6 +5,8 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <QLabel>
+
+#include "child.h"
  
 namespace Ui {
     class MainWindow;
@@ -22,6 +24,7 @@ private slots:
 
 private:
     QWidget *window;
+    Child *child;
     QGridLayout *layout;
 
     QLabel *label;
